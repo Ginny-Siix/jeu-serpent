@@ -25,6 +25,7 @@ window.onload = function () {
 
   function refreshCanvas() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    snakee.advance();
     snakee.draw();
     setTimeout(refreshCanvas, delay);
   }
@@ -40,11 +41,17 @@ window.onload = function () {
     this.draw = function () {
       ctx.save();
       ctx.fillStyle = "#ff0000";
-      for (var i = 0; i > this.body.length; i++) {
+      for (var i = 0; i < this.body.length; i++) {
         drawBlock(ctx, this.body[i]);
       }
 
       ctx.restore();
+    };
+    this.advance = function () {
+      var nextPosition = this.body[0].slice();
+      nextPosition[0] += 1;
+      this.body.unshift(nextPosition);
+      this.body.pop();
     };
   }
 };
