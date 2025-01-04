@@ -145,4 +145,5 @@ document.onkeydown = function handleKeyDown(e) {
   }
   snakee.setDirection(newDirection); // Met à jour la direction du serpent
 };
-// 04/01/202
+// 04/01/2025
+//test du pc portable
