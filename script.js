@@ -2,7 +2,7 @@ var canvasWidth = 900;
 var canvasHeight = 600;
 var blocSkize = 30;
 var ctx;
-var delay = 100;
+var delay = 300;
 var snakee; // Déclarer snakee ici pour qu'il soit accessible partout
 var applee;
 var widtchInBlocks = canvasWidth / blocSkize;
@@ -26,6 +26,8 @@ function init() {
       [6, 4],
       [5, 4],
       [4, 4],
+      [3, 4],
+      [2, 4],
     ],
     "right"
   );
@@ -39,7 +41,7 @@ function init() {
 function refreshCanvas() {
   snakee.advance(); // Faire avancer le serpent
   if (snakee.checkCollision()) {
-    //game over
+    console.log("GAME OVER ! tu conduis comme ta mère ! MDR");
   } else {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
     snakee.draw(); // Dessiner le serpent
@@ -138,6 +140,15 @@ function snake(body, direction) {
 
     return wallCollision || snakeCollision;
   };
+  this.isEatingApple(appleToEat);
+  {
+    var head = this.body[0];
+    if (
+      head[0] === appleToEat.position[0] &&
+      head[1] === appleToEat.position[1]
+    ) {
+    }
+  }
 }
 
 function Apple(position) {
