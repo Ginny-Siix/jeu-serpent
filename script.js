@@ -44,7 +44,9 @@ function refreshCanvas() {
     console.log("GAME OVER ! tu conduis comme ta mère ! MDR");
   } else {
     if (snakee.isEatingApple(applee)) {
-      applee.setNewPosition();
+      do {
+        applee.setNewPosition();
+      } while (applee.isOnSnake(snakee));
     }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
     snakee.draw(); // Dessiner le serpent
@@ -173,6 +175,19 @@ function Apple(position) {
     var newX = Math.round(Math.random() * widtchInBlocks - 1);
     var newY = Math.round(Math.random() * heightInBlocks - 1);
     this.position = [newX, newY];
+  };
+  this.isOnSnake = function (snakeToCheck) {
+    var isOnSnake = false;
+
+    for (var i = 0; i < snakeToCheck.body.length; i++) {
+      if (
+        this.position[0] === snakeToCheck.body[i][0] &&
+        this.position[1] === snakeToCheck.body[i][1]
+      ) {
+        isOnSnake = true;
+      }
+    }
+    isOnSnake;
   };
 }
 
