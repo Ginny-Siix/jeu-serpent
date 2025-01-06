@@ -2,7 +2,7 @@ var canvasWidth = 900;
 var canvasHeight = 600;
 var blocSkize = 30;
 var ctx;
-var delay = 300;
+var delay = 110;
 var snakee; // Déclarer snakee ici pour qu'il soit accessible partout
 var applee;
 var widtchInBlocks = canvasWidth / blocSkize;
@@ -44,6 +44,7 @@ function refreshCanvas() {
     console.log("GAME OVER ! tu conduis comme ta mère ! MDR");
   } else {
     if (snakee.isEatingApple(applee)) {
+      snakee.eatApple = true;
       do {
         applee.setNewPosition();
       } while (applee.isOnSnake(snakee));
@@ -66,6 +67,7 @@ function drawBlock(ctx, position) {
 function snake(body, direction) {
   this.body = body;
   this.direction = direction;
+  this.eatApple = false;
 
   // Dessiner le serpent
   this.draw = function () {
@@ -97,7 +99,8 @@ function snake(body, direction) {
         throw "Invalid direction"; // Si une direction invalide est donnée
     }
     this.body.unshift(nextPosition); // Ajouter la nouvelle tête
-    this.body.pop(); // Supprimer la queue
+    if (!this.eatApple) this.body.pop(); // Supprimer la queue
+    else this.eatApple = false;
   };
 
   // Changer la direction du serpent
