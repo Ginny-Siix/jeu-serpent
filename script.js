@@ -43,6 +43,9 @@ function refreshCanvas() {
   if (snakee.checkCollision()) {
     console.log("GAME OVER ! tu conduis comme ta mère ! MDR");
   } else {
+    if (snakee.isEatingApple(applee)) {
+      applee.setNewPosition();
+    }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
     snakee.draw(); // Dessiner le serpent
     applee.draw();
@@ -140,15 +143,17 @@ function snake(body, direction) {
 
     return wallCollision || snakeCollision;
   };
-  this.isEatingApple(appleToEat);
-  {
+  this.isEatingApple = function (appleToEat) {
     var head = this.body[0];
     if (
       head[0] === appleToEat.position[0] &&
       head[1] === appleToEat.position[1]
     ) {
+      return true;
+    } else {
+      return false;
     }
-  }
+  };
 }
 
 function Apple(position) {
@@ -158,11 +163,16 @@ function Apple(position) {
     ctx.fillStyle = "#33cc33";
     ctx.beginPath();
     var radius = blocSkize / 2;
-    var x = position[0] * blocSkize + radius;
-    var y = position[1] * blocSkize + radius;
+    var x = this.position[0] * blocSkize + radius;
+    var y = this.position[1] * blocSkize + radius;
     ctx.arc(x, y, radius, 0, Math.PI * 2); // Le dernier paramètre devrait être 2 * Math.PI pour un cercle complet
     ctx.fill(); // Remplir le cercle pour obtenir une pomme pleine
     ctx.restore();
+  };
+  this.setNewPosition = function () {
+    var newX = Math.round(Math.random() * widtchInBlocks - 1);
+    var newY = Math.round(Math.random() * heightInBlocks - 1);
+    this.position = [newX, newY];
   };
 }
 
