@@ -41,7 +41,7 @@ function init() {
 function refreshCanvas() {
   snakee.advance(); // Faire avancer le serpent
   if (snakee.checkCollision()) {
-    console.log("GAME OVER ! tu conduis comme ta mère ! MDR");
+    gameOver();
   } else {
     if (snakee.isEatingApple(applee)) {
       snakee.eatApple = true;
@@ -56,6 +56,29 @@ function refreshCanvas() {
   }
 }
 
+function gameOver() {
+  ctx.save();
+  ctx.fillText("Game Over", 5, 15);
+  ctx.fillText("Appuyez sur la touche ESPACE pour rejouer", 5, 30);
+  ctx.restore();
+}
+
+function restart() {
+  snakee = new snake(
+    [
+      [6, 4],
+      [5, 4],
+      [4, 4],
+      [3, 4],
+      [2, 4],
+    ],
+    "right"
+  );
+  applee = new Apple([10, 10]);
+
+  // Lancer la boucle de rafraîchissement du canvas
+  refreshCanvas();
+}
 // Fonction qui dessine chaque bloc du serpent
 function drawBlock(ctx, position) {
   var x = position[0] * blocSkize;
@@ -214,6 +237,9 @@ document.onkeydown = function handleKeyDown(e) {
     case "ArrowDown":
       newDirection = "down";
       break;
+    case " ":
+      restart();
+      return;
     default:
       return; // Si ce n'est pas une touche fléchée, ne rien faire
   }
