@@ -7,6 +7,7 @@ var snakee; // Déclarer snakee ici pour qu'il soit accessible partout
 var applee;
 var widtchInBlocks = canvasWidth / blocSkize;
 var heightInBlocks = canvasHeight / blocSkize;
+var timeout;
 
 window.onload = function () {
   init();
@@ -57,7 +58,7 @@ function refreshCanvas() {
     drawScore();
     snakee.draw(); // Dessiner le serpent
     applee.draw(); // dessiner la pomme
-    setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
+    timeout = setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
   }
 }
 
@@ -108,6 +109,7 @@ function restart() {
   );
   applee = new Apple([10, 10]);
   score = 0;
+  clearTimeout(timeout);
 
   // Lancer la boucle de rafraîchissement du canvas
   refreshCanvas();
