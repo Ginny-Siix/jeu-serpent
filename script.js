@@ -253,20 +253,17 @@ function Apple(position) {
   };
 
   this.isOnSnake = function (snakeToCheck) {
-    var isOnSnake = false;
-
     for (var i = 0; i < snakeToCheck.body.length; i++) {
       if (
         this.position[0] === snakeToCheck.body[i][0] &&
         this.position[1] === snakeToCheck.body[i][1]
       ) {
-        return true;
+        return true;  // Retourne true si la pomme est sur le serpent
       }
     }
+    return false;  // Retourne false si la pomme n'est pas sur le serpent
   };
-  return false;
-}
-
+  
 // Écouteur de touche pour gérer les directions
 document.onkeydown = function handleKeyDown(e) {
   var key = e.key;
