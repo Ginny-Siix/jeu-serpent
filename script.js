@@ -16,7 +16,10 @@ function init() {
   var canvas = document.createElement("canvas");
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
-  canvas.style.border = "3px solid";
+  canvas.style.border = "30px solid purple";
+  canvas.style.margin = "50px auto";
+  canvas.style.display = "block";
+  canvas.style.backgroundColor = "#ddd";
   document.body.appendChild(canvas);
   ctx = canvas.getContext("2d");
 
@@ -84,8 +87,13 @@ function restart() {
 }
 function drawScore() {
   ctx.save();
-  ctx.fillText(score.toString(), 5, canvasHeight - 5);
-
+  ctx.font = "bold 200px sans-serif";
+  ctx.fillStyle = "gray";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  var centreX = canvasWidth / 2;
+  var centreY = canvasHeight / 2;
+  ctx.fillText(score.toString(), centreX, centreY);
   ctx.restore();
 }
 
