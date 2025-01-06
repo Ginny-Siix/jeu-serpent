@@ -5,6 +5,8 @@ var ctx;
 var delay = 100;
 var snakee; // Déclarer snakee ici pour qu'il soit accessible partout
 var applee;
+var widtchInBlocks = canvasWidth / blocSkize;
+var heightInBlocks = canvasHeight / blocSkize;
 
 window.onload = function () {
   init();
@@ -35,11 +37,15 @@ function init() {
 
 // Fonction qui actualise l'affichage du canvas
 function refreshCanvas() {
-  ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
   snakee.advance(); // Faire avancer le serpent
-  snakee.draw(); // Dessiner le serpent
-  applee.draw();
-  setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
+  if (snakee.checkCollision()) {
+    //game over
+  } else {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
+    snakee.draw(); // Dessiner le serpent
+    applee.draw();
+    setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
+  }
 }
 
 // Fonction qui dessine chaque bloc du serpent
@@ -105,6 +111,32 @@ function snake(body, direction) {
     if (allowedDirections.indexOf(newDirection) > -1) {
       this.direction = newDirection; // Met à jour la direction si elle est valide
     }
+  };
+  this.checkCollision = function () {
+    var wallCollision = false;
+    var snakeCollision = false;
+    var head = this.body[0];
+    var rest = this.body.slice(1);
+    var snakeX = head[0];
+    var snakeY = head[1];
+    var minX = 0;
+    var minY = 0;
+    var maxX = widtchInBlocks - 1;
+    var maxY = heightInBlocks - 1;
+    var isNotBetweenHorizontalWalls = snakeX < minX || snakeX > maxX;
+    var isNotBetweenVerticalWalls = snakeY < minY || snakeY > maxY;
+
+    if (isNotBetweenHorizontalWalls || isNotBetweenVerticalWalls) {
+      wallCollision = true;
+    }
+
+    for (var i = 0; i < rest.length; i++) {
+      if (snakeX == rest[i][0] && snakeY == rest[i][1]) {
+        snakeCollision = true;
+      }
+    }
+
+    return wallCollision || snakeCollision;
   };
 }
 
