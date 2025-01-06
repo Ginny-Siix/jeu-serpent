@@ -258,12 +258,13 @@ function Apple(position) {
         this.position[0] === snakeToCheck.body[i][0] &&
         this.position[1] === snakeToCheck.body[i][1]
       ) {
-        return true;  // Retourne true si la pomme est sur le serpent
+        return true; // Retourne true si la pomme est sur le serpent
       }
     }
-    return false;  // Retourne false si la pomme n'est pas sur le serpent
+    return false; // Retourne false si la pomme n'est pas sur le serpent
   };
-  
+}
+
 // Écouteur de touche pour gérer les directions
 document.onkeydown = function handleKeyDown(e) {
   var key = e.key;
