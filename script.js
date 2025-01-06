@@ -54,17 +54,44 @@ function refreshCanvas() {
       } while (applee.isOnSnake(snakee));
     }
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
-    snakee.draw(); // Dessiner le serpent
-    applee.draw();
     drawScore();
+    snakee.draw(); // Dessiner le serpent
+    applee.draw(); // dessiner la pomme
     setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
   }
 }
 
 function gameOver() {
   ctx.save();
-  ctx.fillText("Game Over", 5, 15);
-  ctx.fillText("Appuyez sur la touche ESPACE pour rejouer", 5, 30);
+
+  // "Game Over" avec une police plus grande
+  ctx.font = "bold 50px sans-serif"; // Augmentation de la taille de la police pour "Game Over"
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 5; // Correction de la faute de frappe
+
+  var centreX = canvasWidth / 2;
+  var centreY = canvasHeight / 2;
+
+  // Affichage du "Game Over" avec une grande taille
+  ctx.strokeText("Game Over", centreX, centreY - 180);
+  ctx.fillText("Game Over", centreX, centreY - 180);
+
+  // Retour à une taille de police plus petite pour le texte suivant
+  ctx.font = "bold 30px sans-serif"; // Taille de police pour le second texte
+  ctx.strokeText(
+    "Appuyez sur la touche ESPACE pour rejouer",
+    centreX,
+    centreY - 120
+  );
+  ctx.fillText(
+    "Appuyez sur la touche ESPACE pour rejouer",
+    centreX,
+    centreY - 120
+  );
+
   ctx.restore();
 }
 
