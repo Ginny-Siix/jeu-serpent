@@ -8,6 +8,7 @@ var applee;
 var widtchInBlocks = canvasWidth / blocSkize;
 var heightInBlocks = canvasHeight / blocSkize;
 var timeout;
+var isPaused = false; // Variable pour suivre l'état de la pause
 
 window.onload = function () {
   init();
@@ -96,7 +97,8 @@ function gameOver() {
   ctx.restore();
 }
 
-function restart() {
+function restart(pauseState = false) {
+  // Si on redémarre sans affecter la pause
   snakee = new snake(
     [
       [6, 4],
@@ -111,9 +113,14 @@ function restart() {
   score = 0;
   clearTimeout(timeout);
 
+  isPaused = pauseState; // Ne pas réinitialiser l'état de la pause
+
   // Lancer la boucle de rafraîchissement du canvas
-  refreshCanvas();
+  if (!isPaused) {
+    refreshCanvas(); // Si ce n'est pas en pause, on relance la boucle
+  }
 }
+
 function drawScore() {
   ctx.save();
   ctx.font = "bold 200px sans-serif";
@@ -265,28 +272,80 @@ function Apple(position) {
   };
 }
 
-// Écouteur de touche pour gérer les directions
 document.onkeydown = function handleKeyDown(e) {
   var key = e.key;
   var newDirection;
-  switch (key) {
-    case "ArrowLeft":
-      newDirection = "left";
-      break;
-    case "ArrowUp":
-      newDirection = "up";
-      break;
-    case "ArrowRight":
-      newDirection = "right";
-      break;
-    case "ArrowDown":
-      newDirection = "down";
-      break;
-    case " ":
-      restart();
+
+  // Si le jeu est en pause
+  if (isPaused) {
+    if (key === "p") {
+      // Si on appuie sur "P", on reprend le jeu
+      isPaused = false; // Mettre à jour l'état de la pause
+      refreshCanvas(); // Reprendre le jeu
+    }
+    // Si on appuie sur "Espace", on ne fait rien en pause
+    else {
       return;
-    default:
-      return; // Si ce n'est pas une touche fléchée, ne rien faire
+    }
+  } else {
+    // Si le jeu n'est pas en pause, on gère les directions du serpent
+    switch (key) {
+      case "ArrowLeft":
+        newDirection = "left";
+        break;
+      case "ArrowUp":
+        newDirection = "up";
+        break;
+      case "ArrowRight":
+        newDirection = "right";
+        break;
+      case "ArrowDown":
+        newDirection = "down";
+        break;
+      case "p": // Touche "P" pour mettre en pause
+        togglePause();
+        return;
+      case " ":
+        restart(isPaused); // Redémarre le jeu seulement si ce n'est pas en pause
+        return;
+      default:
+        return; // Si ce n'est pas une touche fléchée ou espace, on ne fait rien
+    }
+    snakee.setDirection(newDirection); // Met à jour la direction du serpent
   }
-  snakee.setDirection(newDirection); // Met à jour la direction du serpent
 };
+
+function togglePause() {
+  if (isPaused) {
+    // Reprendre le jeu
+    isPaused = false;
+    refreshCanvas(); // Relancer la boucle de jeu
+  } else {
+    // Mettre en pause le jeu
+    isPaused = true;
+    clearTimeout(timeout); // Arrêter la boucle de rafraîchissement du canvas
+    drawPauseScreen(); // Afficher un écran de pause
+  }
+}
+
+function drawPauseScreen() {
+  ctx.save();
+  ctx.font = "bold 50px sans-serif";
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 5;
+
+  var centreX = canvasWidth / 2;
+  var centreY = canvasHeight / 2;
+
+  ctx.strokeText("Pause", centreX, centreY - 50);
+  ctx.fillText("Pause", centreX, centreY - 50);
+
+  ctx.font = "bold 30px sans-serif";
+  ctx.strokeText("Appuyez sur 'P' pour reprendre", centreX, centreY + 30);
+  ctx.fillText("Appuyez sur 'P' pour reprendre", centreX, centreY + 30);
+
+  ctx.restore();
+}
