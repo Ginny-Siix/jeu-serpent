@@ -16,7 +16,7 @@ function init() {
   var canvas = document.createElement("canvas");
   canvas.width = canvasWidth;
   canvas.height = canvasHeight;
-  canvas.style.border = "1px solid";
+  canvas.style.border = "3px solid";
   document.body.appendChild(canvas);
   ctx = canvas.getContext("2d");
 
@@ -32,7 +32,7 @@ function init() {
     "right"
   );
   applee = new Apple([10, 10]);
-
+  score = 0;
   // Lancer la boucle de rafraîchissement du canvas
   refreshCanvas();
 }
@@ -45,6 +45,7 @@ function refreshCanvas() {
   } else {
     if (snakee.isEatingApple(applee)) {
       snakee.eatApple = true;
+      score++;
       do {
         applee.setNewPosition();
       } while (applee.isOnSnake(snakee));
@@ -52,6 +53,7 @@ function refreshCanvas() {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight); // Effacer le canvas
     snakee.draw(); // Dessiner le serpent
     applee.draw();
+    drawScore();
     setTimeout(refreshCanvas, delay); // Appeler la fonction de nouveau après un délai
   }
 }
@@ -75,10 +77,18 @@ function restart() {
     "right"
   );
   applee = new Apple([10, 10]);
+  score = 0;
 
   // Lancer la boucle de rafraîchissement du canvas
   refreshCanvas();
 }
+function drawScore() {
+  ctx.save();
+  ctx.fillText(score.toString(), 5, canvasHeight - 5);
+
+  ctx.restore();
+}
+
 // Fonction qui dessine chaque bloc du serpent
 function drawBlock(ctx, position) {
   var x = position[0] * blocSkize;
