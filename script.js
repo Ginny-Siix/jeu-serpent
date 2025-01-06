@@ -175,10 +175,13 @@ function Apple(position) {
     ctx.restore();
   };
   this.setNewPosition = function () {
-    var newX = Math.round(Math.random() * widtchInBlocks - 1);
-    var newY = Math.round(Math.random() * heightInBlocks - 1);
-    this.position = [newX, newY];
+    do {
+      var newX = Math.floor(Math.random() * widtchInBlocks);
+      var newY = Math.floor(Math.random() * heightInBlocks);
+      this.position = [newX, newY];
+    } while (this.position[0] < 0 || this.position[1] < 0); // On vérifie que la position est valide
   };
+
   this.isOnSnake = function (snakeToCheck) {
     var isOnSnake = false;
 
@@ -187,11 +190,11 @@ function Apple(position) {
         this.position[0] === snakeToCheck.body[i][0] &&
         this.position[1] === snakeToCheck.body[i][1]
       ) {
-        isOnSnake = true;
+        return true;
       }
     }
-    isOnSnake;
   };
+  return false;
 }
 
 // Écouteur de touche pour gérer les directions
