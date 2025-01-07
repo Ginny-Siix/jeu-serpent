@@ -1,8 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
-    <title>jeu du Serpent par Ginny_Siix</title>
-    <script src="script.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeu du Serpent</title>
+    <style>
+      /* Masque les contrôles sur les écrans plus grands (PC) */
+      #controls {
+        display: none;
+      }
+
+      /* Affiche les contrôles uniquement sur les petits écrans (téléphones et tablettes) */
+      @media (max-width: 768px) {
+        #controls {
+          display: block;
+          position: absolute;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        #directionControls {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        #directionControls button {
+          margin: 5px;
+          width: 40px;
+          height: 40px;
+        }
+
+        #instructions {
+          display: none;
+        }
+      }
+
+      /* Ajouter du style pour le canvas */
+      canvas {
+        display: block;
+        margin: 0 auto;
+        background-color: #ddd;
+        border: 30px solid purple;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <!-- Panneau de contrôle pour les écrans tactiles -->
+    <div id="controls">
+      <button id="pauseButton">Pause</button>
+      <button id="restartButton">Restart</button>
+
+      <!-- Flèches directionnelles -->
+      <div id="directionControls">
+        <button id="upButton">↑</button>
+        <div>
+          <button id="leftButton">←</button>
+          <button id="rightButton">→</button>
+        </div>
+        <button id="downButton">↓</button>
+      </div>
+    </div>
+
+    <!-- Lier le fichier JavaScript -->
+    <script src="script.js"></script>
+  </body>
 </html>
