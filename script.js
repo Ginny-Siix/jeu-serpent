@@ -14,7 +14,26 @@ let animationFrame = null; // Ajout d'une variable pour stocker l'ID de l'animat
 
 window.onload = function () {
   init();
+  createInstructions();
 };
+
+function createInstructions() {
+  var instructionsDiv = document.createElement("div");
+  instructionsDiv.id = "instructions";
+  instructionsDiv.style.fontFamily = "Arial, sans-serif";
+  instructionsDiv.style.fontSize = "16px";
+  instructionsDiv.style.textAlign = "center";
+  instructionsDiv.style.marginTop = "20px";
+  instructionsDiv.innerHTML = `
+    <h3>Mode d'emploi</h3>
+    <p>Utilisez les flèches directionnelles pour déplacer le serpent.</p>
+    <p>Appuyez sur la touche <strong>ESPACE</strong> pour redémarrer le jeu.</p>
+    <p>Appuyez sur la touche <strong>P</strong> pour mettre le jeu en pause et reprendre.</p>
+    <p>Le but est de manger la pomme (qui apparaît en vert), chaque fois que vous en mangez une, le serpent grandit et vous gagnez un point.</p>
+    <p>Évitez de heurter les murs ou de toucher le corps du serpent !</p>
+  `;
+  document.body.appendChild(instructionsDiv);
+}
 
 function init() {
   var canvas = document.createElement("canvas");
