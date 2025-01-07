@@ -14,23 +14,54 @@
       @media (max-width: 768px) {
         #controls {
           display: block;
-          position: absolute;
-          bottom: 10px;
+          position: fixed; /* Utiliser fixed pour que ça reste en bas */
+          bottom: 350px; /* Ajuster la distance du bas */
           left: 50%;
           transform: translateX(-50%);
+          z-index: 10; /* S'assurer que les contrôles sont au-dessus du canvas */
         }
 
+        #directionControls button {
+          margin: 5px;
+          width: 50px; /* Augmenter la taille des boutons pour plus de confort */
+          height: 50px;
+          font-size: 20px; /* Agrandir le texte pour une meilleure visibilité */
+        }
+
+        /* Flèches directionnelles */
         #directionControls {
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          margin: 30px 0 0 0; /* Déplacer les flèches vers le haut */
         }
 
+        /* Flèches individuelles */
         #directionControls button {
           margin: 5px;
-          width: 40px;
-          height: 40px;
+          width: 60px;
+          height: 60px;
+        }
+
+        #pauseButton {
+          margin-left: 10px;
+          width: 60px;
+          height: 50px;
+        }
+
+        #restartButton {
+          width: 60px;
+          height: 50px;
+        }
+
+        /* Ajouter un peu de marge entre les flèches et les boutons */
+        #upButton {
+          margin-bottom: -10px; /* Remonter un peu la flèche vers le haut */
+        }
+
+        #downButton {
+          margin-top: -10px; /* Remonter un peu la flèche vers le bas */
         }
 
         #instructions {
@@ -38,12 +69,14 @@
         }
       }
 
-      /* Ajouter du style pour le canvas */
+      /* Canvas responsive avec margin et centrage */
       canvas {
         display: block;
-        margin: 0 auto;
+        margin: 30px auto; /* Centrer le canvas et ajouter de l'espace autour */
         background-color: #ddd;
         border: 30px solid purple;
+        max-width: 90%; /* Le canvas prendra 90% de la largeur de l'écran */
+        height: auto; /* La hauteur s'ajuste en fonction de la largeur */
       }
     </style>
   </head>

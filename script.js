@@ -404,3 +404,19 @@ function generateRainbowColors(offset) {
   const color2 = `hsl(${(hue + 120) % 360}, 100%, 50%)`; // Deuxième dégradé (décalé de 120°)
   return [color1, color2];
 }
+
+// Fonction pour ajuster la taille du canvas en fonction de la taille de l'écran
+function resizeCanvas() {
+  const canvas = document.querySelector("canvas");
+  const width = window.innerWidth * 0.9; // Prendre 90% de la largeur de l'écran
+  const height = window.innerHeight * 0.5; // Prendre 50% de la hauteur de l'écran
+
+  canvas.width = width; // Définit la largeur du canvas
+  canvas.height = height; // Définit la hauteur du canvas
+}
+
+// Appeler la fonction pour redimensionner le canvas au chargement de la page
+resizeCanvas();
+
+// Appeler la fonction pour redimensionner le canvas à chaque redimensionnement de la fenêtre
+window.addEventListener("resize", resizeCanvas);
