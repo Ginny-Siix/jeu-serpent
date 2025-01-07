@@ -9,6 +9,8 @@ var widtchInBlocks = canvasWidth / blocSkize;
 var heightInBlocks = canvasHeight / blocSkize;
 var timeout;
 var isPaused = false; // Variable pour suivre l'état de la pause
+let colorOffset = 0;
+let animationFrame = null; // Ajout d'une variable pour stocker l'ID de l'animation
 
 window.onload = function () {
   init();
@@ -265,87 +267,110 @@ function Apple(position) {
         this.position[0] === snakeToCheck.body[i][0] &&
         this.position[1] === snakeToCheck.body[i][1]
       ) {
-        return true; // Retourne true si la pomme est sur le serpent
+        return true;
       }
     }
-    return false; // Retourne false si la pomme n'est pas sur le serpent
+    return false;
   };
 }
 
 document.onkeydown = function handleKeyDown(e) {
-  var key = e.key;
+  var key = e.keyCode;
   var newDirection;
 
-  // Si le jeu est en pause
+  // Si on appuie sur la touche ESPACE, on redémarre le jeu
+  if (key == 32) {
+    if (timeout) {
+      clearTimeout(timeout); // Annule le jeu si il y a un timeout actif
+      timeout = null;
+    }
+    restart(isPaused); // Redémarre avec l'état de pause intact
+  }
+
+  // Si on appuie sur la touche P, on met en pause ou on reprend le jeu
+  if (key == 80) {
+    if (isPaused) {
+      // Si le jeu est en pause, on le reprend
+      isPaused = false;
+      refreshCanvas(); // Relancer la boucle de jeu
+      cancelAnimationFrame(animationFrameId); // Arrêter l'animation de la pause
+    } else {
+      // Si le jeu n'est pas en pause, on le met en pause
+      clearTimeout(timeout);
+      timeout = null;
+      isPaused = true;
+      drawPauseScreen(); // Afficher l'écran de pause
+    }
+    return; // On arrête la propagation de l'événement pour éviter qu'il fasse autre chose
+  }
+
+  // Ignorer si le jeu est en pause
   if (isPaused) {
-    if (key === "p") {
-      // Si on appuie sur "P", on reprend le jeu
-      isPaused = false; // Mettre à jour l'état de la pause
-      refreshCanvas(); // Reprendre le jeu
-    }
-    // Si on appuie sur "Espace", on ne fait rien en pause
-    else {
-      return;
-    }
-  } else {
-    // Si le jeu n'est pas en pause, on gère les directions du serpent
-    switch (key) {
-      case "ArrowLeft":
-        newDirection = "left";
-        break;
-      case "ArrowUp":
-        newDirection = "up";
-        break;
-      case "ArrowRight":
-        newDirection = "right";
-        break;
-      case "ArrowDown":
-        newDirection = "down";
-        break;
-      case "p": // Touche "P" pour mettre en pause
-        togglePause();
-        return;
-      case " ":
-        restart(isPaused); // Redémarre le jeu seulement si ce n'est pas en pause
-        return;
-      default:
-        return; // Si ce n'est pas une touche fléchée ou espace, on ne fait rien
-    }
-    snakee.setDirection(newDirection); // Met à jour la direction du serpent
+    return;
+  }
+
+  // Gérer les mouvements du serpent (flèches directionnelles)
+  if (key == 37) {
+    newDirection = "left";
+  } else if (key == 38) {
+    newDirection = "up";
+  } else if (key == 39) {
+    newDirection = "right";
+  } else if (key == 40) {
+    newDirection = "down";
+  }
+
+  // Mettre à jour la direction si valide
+  if (newDirection) {
+    snakee.setDirection(newDirection);
   }
 };
 
-function togglePause() {
-  if (isPaused) {
-    // Reprendre le jeu
-    isPaused = false;
-    refreshCanvas(); // Relancer la boucle de jeu
-  } else {
-    // Mettre en pause le jeu
-    isPaused = true;
-    clearTimeout(timeout); // Arrêter la boucle de rafraîchissement du canvas
-    drawPauseScreen(); // Afficher un écran de pause
-  }
-}
-
 function drawPauseScreen() {
   ctx.save();
-  ctx.font = "bold 50px sans-serif";
-  ctx.fillStyle = "#000";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.strokeStyle = "white";
-  ctx.lineWidth = 5;
 
   var centreX = canvasWidth / 2;
   var centreY = canvasHeight / 2;
 
+  // Dessiner le texte "Pause" avec couleurs changeantes
+  ctx.font = "bold 50px sans-serif";
+  let colors = generateRainbowColors(colorOffset); // Couleurs changeantes
+  ctx.strokeStyle = colors[0]; // Contour avec couleur changeante
+  ctx.fillStyle = colors[1]; // Texte avec couleur changeante
+  ctx.lineWidth = 5;
   ctx.strokeText("Pause", centreX, centreY - 50);
   ctx.fillText("Pause", centreX, centreY - 50);
 
+  // Dessiner le texte "Appuyez sur 'P' pour reprendre" avec un léger dégradé
   ctx.font = "bold 30px sans-serif";
+  let textGradient = ctx.createLinearGradient(
+    0,
+    centreY + 30,
+    canvasWidth,
+    centreY + 30
+  );
+  textGradient.addColorStop(0, "white");
+  textGradient.addColorStop(1, "lightblue");
+
+  ctx.strokeStyle = "black"; // Contour noir pour le texte
+  ctx.fillStyle = textGradient; // Appliquer un dégradé subtil pour le texte
+  ctx.lineWidth = 2;
   ctx.strokeText("Appuyez sur 'P' pour reprendre", centreX, centreY + 30);
   ctx.fillText("Appuyez sur 'P' pour reprendre", centreX, centreY + 30);
 
+  // Lancer l'animation de couleurs
+  colorOffset += 1;
+  animationFrameId = requestAnimationFrame(drawPauseScreen); // Redessiner à chaque frame
+
   ctx.restore();
+}
+
+// Génère un tableau de couleurs comme un arc-en-ciel
+function generateRainbowColors(offset) {
+  const hue = (offset * 0.5) % 360; // Décalage de la couleur (cycle sur 360)
+  const color1 = `hsl(${hue}, 100%, 50%)`; // Premier dégradé
+  const color2 = `hsl(${(hue + 120) % 360}, 100%, 50%)`; // Deuxième dégradé (décalé de 120°)
+  return [color1, color2];
 }
