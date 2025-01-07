@@ -148,13 +148,24 @@ function snake(body, direction) {
   this.direction = direction;
   this.eatApple = false;
 
-  // Dessiner le serpent
+  // Dessiner la tête du serpent avec une langue qui sort et rentre
   this.draw = function () {
     ctx.save();
-    ctx.fillStyle = "#ff0000"; // Couleur rouge pour le serpent
-    for (var i = 0; i < this.body.length; i++) {
+
+    // Tête du serpent (orange)
+    ctx.fillStyle = "orange"; // Couleur de la tête
+    ctx.fillRect(
+      this.body[0][0] * blocSkize,
+      this.body[0][1] * blocSkize,
+      blocSkize,
+      blocSkize
+    );
+    // Dessiner le reste du corps du serpent
+    ctx.fillStyle = "#ff0000"; // Couleur du corps du serpent
+    for (var i = 1; i < this.body.length; i++) {
       drawBlock(ctx, this.body[i]);
     }
+
     ctx.restore();
   };
 
@@ -244,7 +255,7 @@ function Apple(position) {
   this.position = position;
   this.draw = function () {
     ctx.save();
-    ctx.fillStyle = "#33cc33";
+    ctx.fillStyle = "#228B22";
     ctx.beginPath();
     var radius = blocSkize / 2;
     var x = this.position[0] * blocSkize + radius;
