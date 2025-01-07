@@ -10,73 +10,84 @@
         display: none;
       }
 
-      /* Affiche les contrôles uniquement sur les petits écrans (téléphones et tablettes) */
-      @media (max-width: 768px) {
+      /* Positionner les boutons de manière fixe en bas pour les écrans mobiles */
+      #controls {
+        position: fixed;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10; /* Assurer que les boutons sont au-dessus du jeu */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+      }
+
+      /* Style des boutons */
+      button {
+        margin: 5px;
+        padding: 10px;
+        font-size: 18px;
+        cursor: pointer;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 50px;
+      }
+
+      button:focus {
+        outline: none; /* Enlever le contour par défaut lors du focus */
+      }
+
+      /* Styliser les boutons de direction pour les rendre plus visibles */
+      #upButton,
+      #leftButton,
+      #rightButton,
+      #downButton {
+        width: 60px;
+      }
+
+      /* Ajuster les tailles et l'espacement pour les petits écrans */
+      @media (max-width: 600px) {
         #controls {
-          display: block;
-          position: fixed; /* Utiliser fixed pour que ça reste en bas */
-          bottom: 350px; /* Ajuster la distance du bas */
-          left: 50%;
-          transform: translateX(-50%);
-          z-index: 10; /* S'assurer que les contrôles sont au-dessus du canvas */
+          bottom: 20px; /* Ajuster un peu plus bas si nécessaire sur mobile */
         }
 
-        #directionControls button {
-          margin: 5px;
-          width: 50px; /* Augmenter la taille des boutons pour plus de confort */
-          height: 50px;
-          font-size: 20px; /* Agrandir le texte pour une meilleure visibilité */
+        button {
+          font-size: 16px; /* Réduire légèrement la taille des boutons */
+          width: 40px; /* Réduire la largeur des boutons */
         }
 
-        /* Flèches directionnelles */
-        #directionControls {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          margin: 30px 0 0 0; /* Déplacer les flèches vers le haut */
-        }
-
-        /* Flèches individuelles */
-        #directionControls button {
-          margin: 5px;
-          width: 60px;
-          height: 60px;
-        }
-
-        #pauseButton {
-          margin-left: 10px;
-          width: 60px;
-          height: 50px;
-        }
-
-        #restartButton {
-          width: 60px;
-          height: 50px;
-        }
-
-        /* Ajouter un peu de marge entre les flèches et les boutons */
         #upButton {
-          margin-bottom: -10px; /* Remonter un peu la flèche vers le haut */
-        }
-
-        #downButton {
-          margin-top: -10px; /* Remonter un peu la flèche vers le bas */
-        }
-
-        #instructions {
-          display: none;
+          width: 60px; /* Garder la largeur plus grande pour le bouton "↑" */
         }
       }
 
-      /* Canvas responsive avec margin et centrage */
-      canvas {
-        display: block;
-        margin: 30px auto; /* Centrer le canvas et ajouter de l'espace autour */
-        background-color: #ddd;
-        border: 30px solid purple;
-        max-width: 90%; /* Le canvas prendra 90% de la largeur de l'écran */
-        height: auto; /* La hauteur s'ajuste en fonction de la largeur */
+      /* Optionnel : Ajouter un léger ombrage pour les boutons */
+      button {
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      button:hover {
+        background-color: #45a049; /* Changer la couleur du bouton au survol */
+      }
+
+      /* Disposition des boutons directionnels */
+      #directionControls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #directionControls div {
+        display: flex;
+      }
+
+      /* Espacement entre les boutons de direction */
+      #leftButton,
+      #rightButton {
+        margin: 5px;
       }
     </style>
   </head>
