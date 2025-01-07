@@ -15,6 +15,7 @@ let animationFrame = null; // Ajout d'une variable pour stocker l'ID de l'animat
 window.onload = function () {
   init();
   createInstructions();
+  setupControlButtons(); // Ajoute cette ligne pour lier les boutons
 };
 
 function createInstructions() {
@@ -355,6 +356,57 @@ document.onkeydown = function handleKeyDown(e) {
     snakee.setDirection(newDirection);
   }
 };
+
+function setupControlButtons() {
+  // Relier les boutons de direction aux fonctions de direction
+  document.getElementById("upButton").addEventListener("click", function () {
+    if (!isPaused) {
+      snakee.setDirection("up");
+    }
+  });
+  document.getElementById("leftButton").addEventListener("click", function () {
+    if (!isPaused) {
+      snakee.setDirection("left");
+    }
+  });
+  document.getElementById("rightButton").addEventListener("click", function () {
+    if (!isPaused) {
+      snakee.setDirection("right");
+    }
+  });
+  document.getElementById("downButton").addEventListener("click", function () {
+    if (!isPaused) {
+      snakee.setDirection("down");
+    }
+  });
+
+  // Bouton Pause
+  document.getElementById("pauseButton").addEventListener("click", function () {
+    if (isPaused) {
+      // Si le jeu est en pause, on le reprend
+      isPaused = false;
+      refreshCanvas(); // Relancer la boucle de jeu
+      cancelAnimationFrame(animationFrameId); // Arrêter l'animation de la pause
+    } else {
+      // Si le jeu n'est pas en pause, on le met en pause
+      clearTimeout(timeout);
+      timeout = null;
+      isPaused = true;
+      drawPauseScreen(); // Afficher l'écran de pause
+    }
+  });
+
+  // Bouton Restart
+  document
+    .getElementById("restartButton")
+    .addEventListener("click", function () {
+      if (timeout) {
+        clearTimeout(timeout); // Annule le jeu si il y a un timeout actif
+        timeout = null;
+      }
+      restart(isPaused); // Redémarre avec l'état de pause intact
+    });
+}
 
 function drawPauseScreen() {
   ctx.save();
